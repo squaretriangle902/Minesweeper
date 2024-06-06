@@ -38,7 +38,6 @@ private:
 	bool IsFlag(int row, int column) const;
 	bool IsOpened(int row, int column) const;
 	bool TryOpen(int row, int column);
-
 	std::vector<std::vector<Cell*>> InitializeCellVector(int columnCount, int rowCount);
 
 	std::vector<std::vector<Cell*>> cells;
