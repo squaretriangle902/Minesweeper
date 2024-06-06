@@ -8,21 +8,22 @@ GameWindow::~GameWindow()
 {
 }
 
-void GameWindow::Init(std::string title, int width, int height)
+void GameWindow::Init(std::string title, int width, int height, GameField* gameField)
 {
 	this->window   = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 
 		SDL_WINDOW_SHOWN);
 	this->renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	this->gameFieldView = new GameFieldView(renderer);
-	this->isRunning = true;
+	this->gameField = gameField;
+	this->gameFieldView = new GameFieldView(gameField, renderer, width, height);
 	this->width = width;
 	this->height = height;
+	this->isRunning = true;
 	this->leftPressed = false;
 	this->rightPressed = false;
 }
 
-void GameWindow::HandleEvents(GameField* gameField)
+void GameWindow::HandleEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -38,22 +39,22 @@ void GameWindow::HandleEvents(GameField* gameField)
 			this->leftPressed = true;
 			if (this->rightPressed)
 			{
-				HandleMouseBothButtonDown(event.button, gameField);
+				HandleMouseBothButtonDown(event.button);
 			}
 			else
 			{
-				HandleMouseLeftButtonDown(event.button, gameField);
+				HandleMouseLeftButtonDown(event.button);
 			}
 			break;
 		case SDL_BUTTON_RIGHT:
 			this->rightPressed = true;
 			if (this->leftPressed)
 			{
-				HandleMouseBothButtonDown(event.button, gameField);
+				HandleMouseBothButtonDown(event.button);
 			}
 			else
 			{
-				HandleMouseRightButtonDown(event.button, gameField);
+				HandleMouseRightButtonDown(event.button);
 			}
 			break;
 		default:
@@ -88,13 +89,13 @@ void GameWindow::MouseFieldPosition(int& mouseColumn, int& mouseRow, int cellSiz
 
 void GameWindow::DrawField(GameField* gameField)
 {
-	int cellSize = CellSize(gameField);
+	int cellSize = gameFieldView->GetCellSize();
 	int mouseColumn, mouseRow;
 	MouseFieldPosition(mouseColumn, mouseRow, cellSize);
-	gameFieldView->DrawField(gameField, cellSize, mouseColumn, mouseRow);
+	gameFieldView->DrawField(mouseColumn, mouseRow);
 }
 
-void GameWindow::Render(GameField* gameField)
+void GameWindow::Render()
 {
 	SDL_RenderClear(renderer);
 	DrawField(gameField);
@@ -108,22 +109,22 @@ void GameWindow::Clean()
 	SDL_Quit();
 }
 
-void GameWindow::HandleMouseLeftButtonDown(SDL_MouseButtonEvent& b, GameField* gameField)
+void GameWindow::HandleMouseLeftButtonDown(SDL_MouseButtonEvent& b)
 {
 	int cellSize = CellSize(gameField);
-	gameField->FloodOpen(b.x / cellSize, b.y / cellSize);
+	gameField->FloodOpen(b.y / cellSize, b.x / cellSize);
 }
 
-void GameWindow::HandleMouseBothButtonDown(SDL_MouseButtonEvent& b, GameField* gameField)
+void GameWindow::HandleMouseBothButtonDown(SDL_MouseButtonEvent& b)
 {
 	int cellSize = CellSize(gameField);
-	gameField->TryChord(b.x / cellSize, b.y / cellSize);
+	gameField->TryChord(b.y / cellSize, b.x / cellSize);
 }
 
-void GameWindow::HandleMouseRightButtonDown(SDL_MouseButtonEvent& b, GameField* gameField)
+void GameWindow::HandleMouseRightButtonDown(SDL_MouseButtonEvent& b)
 {
 	int cellSize = CellSize(gameField);
-	gameField->TrySwitchFlag(b.x / cellSize, b.y / cellSize);
+	gameField->TrySwitchFlag(b.y / cellSize, b.x / cellSize);
 }
 
 bool GameWindow::Running()

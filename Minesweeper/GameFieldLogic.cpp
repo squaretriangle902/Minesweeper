@@ -13,58 +13,59 @@ GameField::~GameField()
 
 bool GameField::TryAddBomb(int column, int row)
 {
-	if (!InField(column, row))
+	if (!InField(row, column))
 	{
 		return false;
 	}
 	return cells[column][row]->TryAddBomb();
 }
 
-bool GameField::TrySwitchFlag(int column, int row)
+bool GameField::TrySwitchFlag(int row, int column)
 {
-	if (!InField(column, row))
+	if (!InField(row, column))
 	{
 		return false;
 	}
 	return cells[column][row]->TrySwitchFlag();
 }
 
-bool GameField::TryOpen(int column, int row)
+bool GameField::TryOpen(int row, int column)
 {
 	return cells[column][row]->TryOpen();
 }
 
 bool GameField::CellSatisfiesForFloodOpen(int column, int row)
 {
-	return InField(column, row) && !IsOpened(column, row) && !IsBomb(column, row);
+	return InField(row, column) && !IsOpened(row, column) && !IsBomb(row, column);
 }
 
-void GameField::AddToQueueNearSatisfyingCells(pair<int, int>& position, queue<pair<int, int>>& cellQueue)
+void GameField::AddToQueueNearSatisfyingCells(std::pair<int, int>& position, std::queue<std::pair<int, int>>& cellQueue)
 {
-	for (size_t i = 0; i < offsetVector.size(); i++)
+	for (int i = 0; i < offsets.size(); i++)
 	{
-		int currentColumn = offsetVector[i].first + position.first, currentRow = offsetVector[i].second + position.second;
+		int currentColumn = position.first + offsets[i].first;
+		int currentRow = position.second + offsets[i].second;
 		if (CellSatisfiesForFloodOpen(currentColumn, currentRow))
 		{
-			TryOpen(currentColumn, currentRow);
+			TryOpen(currentRow, currentColumn);
 			cellQueue.push({ currentColumn, currentRow });
 		}
 	}
 }
 
-void GameField::FloodOpenStep(queue<pair<int, int>>& cellQueue)
+void GameField::FloodOpenStep(std::queue<std::pair<int, int>>& cellQueue)
 {
-	pair<int, int> position = cellQueue.front();
+	std::pair<int, int> position = cellQueue.front();
 	cellQueue.pop();
-	if (TryOpen(position.first, position.second) && CellNearBombsCount(position.first, position.second) == 0)
+	if (TryOpen(position.second, position.first) && CellNearBombsCount(position.second, position.first) == 0)
 	{
 		AddToQueueNearSatisfyingCells(position, cellQueue);
 	}
 }
 
-bool GameField::FloodOpen(int column, int row)
+bool GameField::FloodOpen(int row, int column)
 {
-	queue<pair<int, int>> cellQueue = queue<pair<int, int>>();
+	std::queue<std::pair<int, int>> cellQueue = std::queue<std::pair<int, int>>();
 	cellQueue.push({ column, row });
 	while (!cellQueue.empty())
 	{
@@ -74,24 +75,24 @@ bool GameField::FloodOpen(int column, int row)
 
 }
 
-bool GameField::IsBomb(int column, int row)
+bool GameField::IsBomb(int row, int column) const
 {
 	return cells[column][row]->HasBomb();
 }
 
-bool GameField::IsFlag(int column, int row)
+bool GameField::IsFlag(int column, int row) const
 {
 	return cells[column][row]->HasFlag();
 }
 
-bool GameField::IsOpened(int column, int row)
+bool GameField::IsOpened(int row, int column) const
 {
 	return cells[column][row]->IsOpened();
 }
 
-vector<vector<Cell*>> GameField::InitializeCellVector(int columnCount, int rowCount)
+std::vector<std::vector<Cell*>> GameField::InitializeCellVector(int columnCount, int rowCount)
 {
-	vector<vector<Cell*>> result = vector<vector<Cell*>>(columnCount, vector<Cell*>(rowCount));
+	std::vector<std::vector<Cell*>> result = std::vector<std::vector<Cell*>>(columnCount, std::vector<Cell*>(rowCount));
 	for (int i = 0; i < columnCount; i++)
 	{
 		for (int j = 0; j < rowCount; j++)
@@ -102,13 +103,13 @@ vector<vector<Cell*>> GameField::InitializeCellVector(int columnCount, int rowCo
 	return result;
 }
 
-int GameField::CellNearBombsCount(int column, int row)
+int GameField::CellNearBombsCount(int row, int column) const
 {
 	int nearBombsCount = 0;
-	for (int i = 0; i < offsetVector.size(); i++)
+	for (int i = 0; i < offsets.size(); i++)
 	{
-		int currentRow = row + offsetVector[i].first, currentColumn = column + offsetVector[i].second;
-		if (InField(currentColumn, currentRow) && IsBomb(currentColumn, currentRow))
+		int currentRow = row + offsets[i].first, currentColumn = column + offsets[i].second;
+		if (InField(currentRow, currentColumn) && IsBomb(currentRow, currentColumn))
 		{
 			nearBombsCount++;
 		}
@@ -116,13 +117,13 @@ int GameField::CellNearBombsCount(int column, int row)
 	return nearBombsCount;
 }
 
-int GameField::CellNearFlagsCount(int column, int row)
+int GameField::CellNearFlagsCount(int column, int row) const
 {
 	int nearFlagsCount = 0;
-	for (int i = 0; i < offsetVector.size(); i++)
+	for (int i = 0; i < offsets.size(); i++)
 	{
-		int currentRow = row + offsetVector[i].first, currentColumn = column + offsetVector[i].second;
-		if (InField(currentColumn, currentRow) && IsFlag(currentRow, currentColumn))
+		int currentRow = row + offsets[i].first, currentColumn = column + offsets[i].second;
+		if (InField(currentRow, currentColumn) && IsFlag(currentRow, currentColumn))
 		{
 			nearFlagsCount++;
 		}
@@ -130,13 +131,13 @@ int GameField::CellNearFlagsCount(int column, int row)
 	return nearFlagsCount;
 }
 
-int GameField::CellNearOpenedCount(int column, int row)
+int GameField::CellNearOpenedCount(int column, int row) const
 {
 	int nearOpenedCount = 0;
-	for (int i = 0; i < offsetVector.size(); i++)
+	for (int i = 0; i < offsets.size(); i++)
 	{
-		int currentRow = row + offsetVector[i].first, currentColumn = column + offsetVector[i].second;
-		if (InField(currentColumn, currentRow) && IsOpened(currentRow, currentColumn))
+		int currentRow = row + offsets[i].first, currentColumn = column + offsets[i].second;
+		if (InField(currentRow, currentColumn) && IsOpened(currentColumn, currentRow))
 		{
 			nearOpenedCount++;
 		}
@@ -144,66 +145,62 @@ int GameField::CellNearOpenedCount(int column, int row)
 	return nearOpenedCount;
 }
 
-bool GameField::NearBombsCountEqualsNearFlagsCount(int column, int row)
+bool GameField::CellSatisfiesForChord(int row, int column) const
 {
 	int nearFlagCount = 0, nearBombCount = 0;
-	for (int i = 0; i < offsetVector.size(); i++)
+	for (int i = 0; i < offsets.size(); i++)
 	{
-		int currentRow = row + offsetVector[i].first, currentColumn = column + offsetVector[i].second;
-		if (!InField(currentColumn, currentRow))
+		int currentRow = row + offsets[i].first, currentColumn = column + offsets[i].second;
+		if (!InField(currentRow, currentColumn))
 		{
 			continue;
 		}
-		if (IsBomb(currentColumn, currentRow)) nearBombCount++;
+		if (IsBomb(currentRow, currentColumn)) nearBombCount++;
 		if (IsFlag(currentColumn, currentRow)) nearFlagCount++;
 	}
 	return nearBombCount == nearFlagCount;
 }
 
 
-int GameField::GetRowCount()
+int GameField::GetRowCount() const
 {
 	return this->rowCount;
 }
 
-int GameField::GetColumnCount()
+int GameField::GetColumnCount() const
 {
 	return this->columnCount;
 }
 
-Cell* GameField::GetCell(int column, int row)
+const Cell* GameField::GetCell(int row, int column) const
 {
 	return cells[column][row];
 }
 
-const Cell* GameField::GetCell(int column, int row) const
+bool GameField::TryChord(int row, int column)
 {
-	return cells[column][row];
-}
-
-bool GameField::TryChord(int column, int row)
-{
-	if (!InField(column, row) || !NearBombsCountEqualsNearFlagsCount(column, row))
+	if (!InField(row, column) || !CellSatisfiesForChord(row, column))
 	{
 		return false;
 	}
-	Chord(column, row);
+	Chord(row, column);
 	return true;
 }
 
-void GameField::Chord(int column, int row)
+void GameField::Chord(int row, int column)
 {
-	for (int i = 0; i < offsetVector.size(); i++)
+	for (int i = 0; i < offsets.size(); i++)
 	{
-		int currentColumn = column + offsetVector[i].first, currentRow = row + offsetVector[i].second;
-		if (InField(currentColumn, currentRow))
+		int currentColumn = column + offsets[i].first; 
+		int currentRow = row + offsets[i].second;
+		if (InField(currentRow, currentColumn))
 		{
-			FloodOpen(currentColumn, currentRow);
+			FloodOpen(currentRow, currentColumn);
 		}
 	}
 }
 
-bool GameField::InField(int column, int row)
+bool GameField::InField(int row, int column) const
 {
 	return row < rowCount && row >= 0 && column < columnCount && column >= 0;
 }

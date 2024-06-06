@@ -141,7 +141,10 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="GameFieldLogic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="CellPosition.cpp" />
+    <ClCompile Include="PositionConvert.cpp" />
     <ClCompile Include="TextureLoading.cpp" />
+    <ClCompile Include="WindowPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
@@ -151,7 +154,10 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GameField.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="CellPosition.h" />
+    <ClInclude Include="PositionConvert.h" />
     <ClInclude Include="TextureLoading.h" />
+    <ClInclude Include="WindowPosition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

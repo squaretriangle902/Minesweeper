@@ -2,10 +2,13 @@
 #include <SDL.h>
 #include <SDL_Image.h>
 #include <SDL_ttf.h>
+#include <string>
 #include "GameField.h"
 #include "CellView.h"
 #include "GameFieldView.h"
-#include <string>
+#include "WindowPosition.h"
+#include "CellPosition.h"
+#include "PositionConvert.h"
 
 class GameFieldView;
 
@@ -17,14 +20,14 @@ public:
 	GameWindow();
 	~GameWindow();
 
-	void Init(std::string title, int width, int height);
-	void HandleEvents(GameField* gameField);
-	void Render(GameField* gameField);
+	void Init(std::string title, int width, int height, GameField* gameField);
+	void HandleEvents();
+	void Render();
 	void Clean();
 
-	void HandleMouseLeftButtonDown(SDL_MouseButtonEvent& b, GameField* gameField);
-	void HandleMouseBothButtonDown(SDL_MouseButtonEvent& b, GameField* gameField);
-	void HandleMouseRightButtonDown(SDL_MouseButtonEvent& b, GameField* gameField);
+	void HandleMouseLeftButtonDown(SDL_MouseButtonEvent& b);
+	void HandleMouseBothButtonDown(SDL_MouseButtonEvent& b);
+	void HandleMouseRightButtonDown(SDL_MouseButtonEvent& b);
 
 	bool Running();
 private:
@@ -38,5 +41,6 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	GameFieldView* gameFieldView;
+	GameField* gameField;
 };
 

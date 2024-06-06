@@ -5,4 +5,4 @@
 
 SDL_Texture* LoadTexture(SDL_Surface* surface, SDL_Renderer* renderer, std::string imagePath);
 
-SDL_Rect* RectangleAtPosition(int column, int row, int cellSize);
+SDL_Rect RectangleAtPosition(int row, int column, int cellSize);

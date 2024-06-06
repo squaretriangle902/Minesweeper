@@ -28,27 +28,29 @@ void FillWithBombs(GameField* gameField, int bombCount)
 	}
 }
 
+
 int main(int argc, char* argv[])
 {
-	srand(time(NULL));
+	srand(time(nullptr));
 
-	int rows = 30, columns = 30;
-	int cellSize = 20;
-	int bombCount = 99;
+	int const rowCount = 30; 
+	int const columnCount = 30;
+	int const bombCount = 99;
+	int const cellSize = 20;
 
-	GameField* gameField = new GameField(rows, columns);
+	GameField* gameField = new GameField(rowCount, columnCount);
 	FillWithBombs(gameField, bombCount);
 
-	const int FPS = 200;
-	const int frameDelay = 1000 / FPS;
+	int const FPS = 200;
+	int const frameDelay = 1000 / FPS;
 
 	GameWindow* gameWindow = new GameWindow();
-	gameWindow->Init("Minesweeper", columns * cellSize, rows * cellSize);
+	gameWindow->Init("Minesweeper", columnCount * cellSize, rowCount * cellSize, gameField);
 	while (gameWindow->Running())
 	{
 		Uint32 frameStart = SDL_GetTicks();
-		gameWindow->HandleEvents(gameField);
-		gameWindow->Render(gameField);
+		gameWindow->HandleEvents();
+		gameWindow->Render();
 		int frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) 
 		{

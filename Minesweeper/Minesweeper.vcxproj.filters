@@ -39,6 +39,15 @@
     <ClCompile Include="GameFieldView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CellPosition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowPosition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionConvert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameField.h">
@@ -63,6 +72,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameFieldView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CellPosition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowPosition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionConvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

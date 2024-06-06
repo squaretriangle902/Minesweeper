@@ -12,13 +12,20 @@ class GameField;
 class GameFieldView
 {
 public:
-	GameFieldView(SDL_Renderer* renderer);
+	GameFieldView(GameField* gameField, SDL_Renderer* renderer, int width, int height);
 	~GameFieldView();
 
-	void DrawField(GameField* gameField, int cellSize, int mouseColumn, int mouseRow);
+	int GetCellSize() const;
+	void DrawField(int mouseColumn, int mouseRow) const;
 private:
+	int CellSize(GameField* gameField);
+
 	SDL_Renderer* renderer;
 	CellView* cellView;
+	GameField* gameField;
+	int cellSize;
+	int width;
+	int height;
 };
 
 
