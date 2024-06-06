@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\squar\source\repos\Minesweeper\Minesweeper\SDL2-2.26.2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -135,17 +135,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="CellView.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameFieldView.cpp" />
     <ClCompile Include="GameWindow.cpp" />
-    <ClCompile Include="GameField.cpp" />
+    <ClCompile Include="GameFieldLogic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TextureLoading.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellView.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameFieldView.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GameField.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="TextureLoading.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

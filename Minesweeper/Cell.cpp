@@ -1,87 +1,58 @@
 #include "Cell.h"
 
+
 Cell::Cell(bool bomb, bool flag, bool  opened)
 {
-	this->bomb = bomb;
-	this->flag = flag;
-	this->opened = opened;
+	this->hasBomb = bomb;
+	this->hasFlag = flag;
+	this->isOpened = opened;
 }
 
 Cell::~Cell()
 {
 }
 
-bool Cell::IsBomb()
+bool Cell::HasBomb() const
 {
-	return this->bomb;
+	return this->hasBomb;
 }
 
-bool Cell::IsFlag()
+bool Cell::HasFlag() const
 {
-	return this->flag;
-}
-
-bool Cell::IsOpened()
-{
-	return this->opened;
-}
-
-void Cell::AddBomb()
-{
-	this->bomb = true;
-}
-
-void Cell::SwitchFlag()
-{
-	this->flag = !flag;
-}
-
-void Cell::Open()
-{
-	this->opened = true;
-}
-
-bool Cell::IsBomb() const
-{
-	return bomb;
-}
-
-bool Cell::IsFlag() const
-{
-	return flag;
+	return this->hasFlag;
 }
 
 bool Cell::IsOpened() const
 {
-	return opened;
+	return this->isOpened;
 }
 
 bool Cell::TryAddBomb()
 {
-	if (this->bomb)
+	if (this->hasBomb)
 	{
 		return false;
 	}
-	this->bomb = true;
+	this->hasBomb = true;
 	return true;
 }
 
 bool Cell::TrySwitchFlag()
 {
-	if (this->opened)
+	if (this->isOpened)
 	{
 		return false;
 	}
-	this->flag = !flag;
+	this->hasFlag = !hasFlag;
 	return true;
 }
 
 bool Cell::TryOpen()
 {
-	if (this->flag)
+	if (this->hasFlag)
 	{
 		return false;
 	}
-	this->opened = true;
+	this->isOpened = true;
 	return true;
 }

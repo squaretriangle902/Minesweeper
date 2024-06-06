@@ -6,21 +6,13 @@ public:
 	Cell(bool bomb = false, bool flag = false, bool opened = false);
 	~Cell();
 
-	bool IsBomb();
-	bool IsFlag();
-	bool IsOpened();
-	void AddBomb();
-	void SwitchFlag();
-	void Open();
-
-	bool IsBomb() const;
-	bool IsFlag() const;
+	bool HasBomb() const;
+	bool HasFlag() const;
 	bool IsOpened() const;
-
 	bool TryAddBomb();
 	bool TrySwitchFlag();
 	bool TryOpen();
 
 private:
-	bool bomb, flag, opened;
+	bool hasBomb, hasFlag, isOpened;
 };

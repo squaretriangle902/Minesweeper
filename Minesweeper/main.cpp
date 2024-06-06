@@ -7,7 +7,17 @@ using namespace std;
 
 void AddBomb(GameField* gameField)
 {
-	while (!gameField->TryAddBomb(rand() % (gameField->GetColumnCount() + 1), rand() % (gameField->GetRowCount() + 1))) {};
+	int randomColumnUpperBound = gameField->GetColumnCount() + 1;
+	int randomRowUpperBound = gameField->GetRowCount() + 1;
+	while (true)
+	{
+		int randomColumn = rand() % randomColumnUpperBound;
+		int randomRow = rand() % randomRowUpperBound;
+		if (gameField->TryAddBomb(randomColumn, randomRow))
+		{
+			return;
+		}
+	}
 }
 
 void FillWithBombs(GameField* gameField, int bombCount)
@@ -24,7 +34,7 @@ int main(int argc, char* argv[])
 
 	int rows = 30, columns = 30;
 	int cellSize = 20;
-	int bombCount = 3;
+	int bombCount = 99;
 
 	GameField* gameField = new GameField(rows, columns);
 	FillWithBombs(gameField, bombCount);
@@ -32,27 +42,19 @@ int main(int argc, char* argv[])
 	const int FPS = 200;
 	const int frameDelay = 1000 / FPS;
 
-	Uint32 frameStart = SDL_GetTicks();
-	int frameTime = 0;
-
-	GameWindow* game = new GameWindow();
-	game->Init("Minesweeper", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, columns * cellSize, rows * cellSize, true);
-	while (game->Running())
+	GameWindow* gameWindow = new GameWindow();
+	gameWindow->Init("Minesweeper", columns * cellSize, rows * cellSize);
+	while (gameWindow->Running())
 	{
-		frameStart = SDL_GetTicks();
-
-		game->HandleEvents(gameField);
-		game->Render(gameField);
-
-		frameTime = SDL_GetTicks() - frameStart;
-
+		Uint32 frameStart = SDL_GetTicks();
+		gameWindow->HandleEvents(gameField);
+		gameWindow->Render(gameField);
+		int frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) 
 		{
 			SDL_Delay(frameDelay - frameTime);
 		}
 	}
-	game->Clean();
-
-
+	gameWindow->Clean();
 	return 0;
 }

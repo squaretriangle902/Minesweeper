@@ -76,12 +76,12 @@ bool GameField::FloodOpen(int column, int row)
 
 bool GameField::IsBomb(int column, int row)
 {
-	return cells[column][row]->IsBomb();
+	return cells[column][row]->HasBomb();
 }
 
 bool GameField::IsFlag(int column, int row)
 {
-	return cells[column][row]->IsFlag();
+	return cells[column][row]->HasFlag();
 }
 
 bool GameField::IsOpened(int column, int row)
@@ -130,6 +130,20 @@ int GameField::CellNearFlagsCount(int column, int row)
 	return nearFlagsCount;
 }
 
+int GameField::CellNearOpenedCount(int column, int row)
+{
+	int nearOpenedCount = 0;
+	for (int i = 0; i < offsetVector.size(); i++)
+	{
+		int currentRow = row + offsetVector[i].first, currentColumn = column + offsetVector[i].second;
+		if (InField(currentColumn, currentRow) && IsOpened(currentRow, currentColumn))
+		{
+			nearOpenedCount++;
+		}
+	}
+	return nearOpenedCount;
+}
+
 bool GameField::NearBombsCountEqualsNearFlagsCount(int column, int row)
 {
 	int nearFlagCount = 0, nearBombCount = 0;
@@ -155,6 +169,11 @@ int GameField::GetRowCount()
 int GameField::GetColumnCount()
 {
 	return this->columnCount;
+}
+
+Cell* GameField::GetCell(int column, int row)
+{
+	return cells[column][row];
 }
 
 const Cell* GameField::GetCell(int column, int row) const

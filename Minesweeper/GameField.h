@@ -2,7 +2,6 @@
 #include <vector>
 #include <queue>
 #include "Cell.h"
-#include "Counter.h"
 #include "GameWindow.h"
 #include <iostream>
 
@@ -25,10 +24,12 @@ public:
 	
 
 	int CellNearBombsCount(int column, int row);
-	int CellNearFlagsCount(int column, int row);
+
 
 	int GetRowCount();
 	int GetColumnCount();
+
+	Cell* GetCell(int column, int row);
 
 	const Cell* GetCell(int column, int row) const;
 
@@ -36,13 +37,12 @@ public:
 	bool InField(int column, int row);
 
 private:
+	int CellNearFlagsCount(int column, int row);
+	int CellNearOpenedCount(int column, int row);
 
 	bool CellSatisfiesForFloodOpen(int currentColumn, int currentRow);
-
-	void AddToQueueNearSatisfyingCells(std::pair<int, int>& position, std::queue<std::pair<int, int>>& cellQueue);
-
+	void AddToQueueNearSatisfyingCells(pair<int, int>& position, queue<pair<int, int>>& cellQueue);
 	void FloodOpenStep(queue<pair<int, int>>& queue);
-
 	bool NearBombsCountEqualsNearFlagsCount(int column, int row);
 	void Chord(int column, int row);
 	bool IsBomb(int column, int row);
