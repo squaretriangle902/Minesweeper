@@ -3,6 +3,8 @@
 #include <SDL_Image.h>
 #include "GameField.h"
 
+class GameField;
+
 class GameWindow
 {
 public:
@@ -21,11 +23,14 @@ public:
 
 	bool Running();
 private:
+
 	void DrawCell(SDL_Rect* rectangle, const Cell* cell, bool highlighted, int bombCount) const;
+	void DrawBombCount(SDL_Rect* rectangle, const Cell* cell, int bombCount) const;
+
 	int CellSize(GameField* gameField);
 	void ChangeRenderRectangle(SDL_Rect* rectangle, int cellSize, int x, int y);
 
-	void LoadTexture();
+	SDL_Texture* LoadTexture(SDL_Surface* surface, const char* imagePath);
 
 	int Min(int a, int b);
 

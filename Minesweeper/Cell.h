@@ -6,11 +6,9 @@ public:
 	Cell(bool bomb = false, bool flag = false, bool opened = false);
 	~Cell();
 
-	int GetNearBombsCount();
 	bool IsBomb();
 	bool IsFlag();
 	bool IsOpened();
-	void IncrementNearBombsCount();
 	void AddBomb();
 	void SwitchFlag();
 	void Open();
@@ -25,5 +23,4 @@ public:
 
 private:
 	bool bomb, flag, opened;
-	int nearBombsCount;
 };

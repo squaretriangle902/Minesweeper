@@ -23,10 +23,10 @@ GameWindow::~GameWindow()
 
 void GameWindow::Init(const char* title, int xPosition, int yPosition, int width, int height, bool fullscreen)
 {
-	window = SDL_CreateWindow(title, xPosition, yPosition, width, height, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	isRunning = true;
+	this->window = SDL_CreateWindow(title, xPosition, yPosition, width, height, SDL_WINDOW_SHOWN);
+	this->renderer = SDL_CreateRenderer(window, -1, 0);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	this->isRunning = true;
 
 	this->width = width;
 	this->height = height;
@@ -34,42 +34,22 @@ void GameWindow::Init(const char* title, int xPosition, int yPosition, int width
 	this->leftPressed = false;
 	this->rightPressed = false;
 
-	SDL_Surface* tmpSurface = IMG_Load("images/openedCell_0.png");
-	openedCellTexture_0 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_1.png");
-	openedCellTexture_1 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_2.png");
-	openedCellTexture_2 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_3.png");
-	openedCellTexture_3 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_4.png");
-	openedCellTexture_4 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_5.png");
-	openedCellTexture_5 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_6.png");
-	openedCellTexture_6 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_7.png");
-	openedCellTexture_7 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/openedCell_8.png");
-	openedCellTexture_8 = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/flaggedCell.png");
-	flaggedCellTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/explodedCell.png");
-	explodedCellTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-	tmpSurface = IMG_Load("images/closedCell.png");
-	closedCellTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
+	SDL_Surface* tmpSurface = new SDL_Surface();
+
+	flaggedCellTexture  = LoadTexture(tmpSurface, "images/flaggedCell.png");
+	explodedCellTexture	= LoadTexture(tmpSurface, "images/explodedCell.png");
+	closedCellTexture 	= LoadTexture(tmpSurface, "images/closedCell.png");
+	openedCellTexture_0	= LoadTexture(tmpSurface, "images/openedCell_0.png");
+	openedCellTexture_1	= LoadTexture(tmpSurface, "images/openedCell_1.png");
+	openedCellTexture_2	= LoadTexture(tmpSurface, "images/openedCell_2.png");
+	openedCellTexture_3	= LoadTexture(tmpSurface, "images/openedCell_3.png");
+	openedCellTexture_4	= LoadTexture(tmpSurface, "images/openedCell_4.png");
+	openedCellTexture_5	= LoadTexture(tmpSurface, "images/openedCell_5.png");
+	openedCellTexture_6	= LoadTexture(tmpSurface, "images/openedCell_6.png");
+	openedCellTexture_7	= LoadTexture(tmpSurface, "images/openedCell_7.png");
+	openedCellTexture_8	= LoadTexture(tmpSurface, "images/openedCell_8.png");
+
+	delete tmpSurface;
 }
 
 void GameWindow::HandleEvents(GameField* gameField)
@@ -136,6 +116,14 @@ void GameWindow::ChangeRenderRectangle(SDL_Rect* rectangle, int cellSize, int ce
 	rectangle->y = cellRow * cellSize;
 }
 
+SDL_Texture* GameWindow::LoadTexture(SDL_Surface* surface, const char* imagePath)
+{
+	surface = IMG_Load(imagePath);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+	return texture;
+}
+
 void GameWindow::DrawField(GameField* gameField)
 {
 	int cellSize = CellSize(gameField);
@@ -155,6 +143,7 @@ void GameWindow::DrawField(GameField* gameField)
 		}
 	}
 
+	delete rectangle;
 }
 
 void GameWindow::Render(GameField* gameField)
@@ -174,20 +163,19 @@ void GameWindow::Clean()
 void GameWindow::HandleMouseLeftButtonDown(SDL_MouseButtonEvent& b, GameField* gameField)
 {
 	int cellSize = CellSize(gameField);
-	//gameField->FloodOpen(b.x / cellSize, b.y / cellSize);
-	gameField->OpenRecursive(b.x / cellSize, b.y / cellSize);
+	gameField->FloodOpen(b.x / cellSize, b.y / cellSize);
 }
 
 void GameWindow::HandleMouseBothButtonDown(SDL_MouseButtonEvent& b, GameField* gameField)
 {
 	int cellSize = CellSize(gameField);
-	gameField->TryMultiGuess(b.x / cellSize, b.y / cellSize);
+	gameField->TryChord(b.x / cellSize, b.y / cellSize);
 }
 
 void GameWindow::HandleMouseRightButtonDown(SDL_MouseButtonEvent& b, GameField* gameField)
 {
 	int cellSize = CellSize(gameField);
-	gameField->TrySwitchFlag(b.y / cellSize, b.x / cellSize);
+	gameField->TrySwitchFlag(b.x / cellSize, b.y / cellSize);
 }
 
 
@@ -202,44 +190,13 @@ void GameWindow::DrawCell(SDL_Rect* rectangle, const Cell* cell, bool highlighte
 	{
 		SDL_RenderCopy(renderer, closedCellTexture, NULL, rectangle);
 	}
-	if (cell->IsOpened() && !cell->IsBomb())
-	{
-		switch (bombCount)
-		{
-		case 0:
-			SDL_RenderCopy(renderer, openedCellTexture_0, NULL, rectangle);
-			break;
-		case 1:
-			SDL_RenderCopy(renderer, openedCellTexture_1, NULL, rectangle);
-			break;
-		case 2:
-			SDL_RenderCopy(renderer, openedCellTexture_2, NULL, rectangle);
-			break;
-		case 3:
-			SDL_RenderCopy(renderer, openedCellTexture_3, NULL, rectangle);
-			break;
-		case 4:
-			SDL_RenderCopy(renderer, openedCellTexture_4, NULL, rectangle);
-			break;
-		case 5:
-			SDL_RenderCopy(renderer, openedCellTexture_5, NULL, rectangle);
-			break;
-		case 6:
-			SDL_RenderCopy(renderer, openedCellTexture_6, NULL, rectangle);
-			break;
-		case 7:
-			SDL_RenderCopy(renderer, openedCellTexture_7, NULL, rectangle);
-			break;
-		case 8:
-			SDL_RenderCopy(renderer, openedCellTexture_8, NULL, rectangle);
-			break;
-		default:
-			break;
-		}
-	}
 	if (cell->IsFlag())
 	{
 		SDL_RenderCopy(renderer, flaggedCellTexture, NULL, rectangle);
+	}
+	if (cell->IsOpened() && !cell->IsBomb())
+	{
+		DrawBombCount(rectangle, cell, bombCount);
 	}
 	if (cell->IsOpened() && cell->IsBomb())
 	{
@@ -247,9 +204,44 @@ void GameWindow::DrawCell(SDL_Rect* rectangle, const Cell* cell, bool highlighte
 	}
 	if (highlighted)
 	{
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
-		SDL_RenderDrawRect(renderer, rectangle);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 64);
+		SDL_RenderFillRect(renderer, rectangle);
+	}
+}
+
+void GameWindow::DrawBombCount(SDL_Rect* rectangle, const Cell* cell, int bombCount) const
+{
+	switch (bombCount)
+	{
+	case 0:
+		SDL_RenderCopy(renderer, openedCellTexture_0, NULL, rectangle);
+		break;
+	case 1:
+		SDL_RenderCopy(renderer, openedCellTexture_1, NULL, rectangle);
+		break;
+	case 2:
+		SDL_RenderCopy(renderer, openedCellTexture_2, NULL, rectangle);
+		break;
+	case 3:
+		SDL_RenderCopy(renderer, openedCellTexture_3, NULL, rectangle);
+		break;
+	case 4:
+		SDL_RenderCopy(renderer, openedCellTexture_4, NULL, rectangle);
+		break;
+	case 5:
+		SDL_RenderCopy(renderer, openedCellTexture_5, NULL, rectangle);
+		break;
+	case 6:
+		SDL_RenderCopy(renderer, openedCellTexture_6, NULL, rectangle);
+		break;
+	case 7:
+		SDL_RenderCopy(renderer, openedCellTexture_7, NULL, rectangle);
+		break;
+	case 8:
+		SDL_RenderCopy(renderer, openedCellTexture_8, NULL, rectangle);
+		break;
+	default:
+		break;
 	}
 }
 

@@ -5,16 +5,10 @@ Cell::Cell(bool bomb, bool flag, bool  opened)
 	this->bomb = bomb;
 	this->flag = flag;
 	this->opened = opened;
-	this->nearBombsCount = 0;
 }
 
 Cell::~Cell()
 {
-}
-
-int Cell::GetNearBombsCount()
-{
-	return this->nearBombsCount;
 }
 
 bool Cell::IsBomb()
@@ -30,11 +24,6 @@ bool Cell::IsFlag()
 bool Cell::IsOpened()
 {
 	return this->opened;
-}
-
-void Cell::IncrementNearBombsCount()
-{
-	this->nearBombsCount++;
 }
 
 void Cell::AddBomb()
