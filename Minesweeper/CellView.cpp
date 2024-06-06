@@ -76,6 +76,18 @@ CellView::CellView(SDL_Renderer* renderer)
 	this->renderer            = renderer;
 	this->tmpSurface          = tmpSurface;
 	this->tmpSurface          = new SDL_Surface();
+	this->flaggedCellTexture  = LoadTexture(tmpSurface, renderer, "images/flaggedCell.png");
+	this->explodedCellTexture = LoadTexture(tmpSurface, renderer, "images/explodedCell.png");
+	this->closedCellTexture   = LoadTexture(tmpSurface, renderer, "images/closedCell.png");
+	this->openedCellTexture_0 = LoadTexture(tmpSurface, renderer, "images/openedCell_0.png");
+	this->openedCellTexture_1 = LoadTexture(tmpSurface, renderer, "images/openedCell_1.png");
+	this->openedCellTexture_2 = LoadTexture(tmpSurface, renderer, "images/openedCell_2.png");
+	this->openedCellTexture_3 = LoadTexture(tmpSurface, renderer, "images/openedCell_3.png");
+	this->openedCellTexture_4 = LoadTexture(tmpSurface, renderer, "images/openedCell_4.png");
+	this->openedCellTexture_5 = LoadTexture(tmpSurface, renderer, "images/openedCell_5.png");
+	this->openedCellTexture_6 = LoadTexture(tmpSurface, renderer, "images/openedCell_6.png");
+	this->openedCellTexture_7 = LoadTexture(tmpSurface, renderer, "images/openedCell_7.png");
+	this->openedCellTexture_8 = LoadTexture(tmpSurface, renderer, "images/openedCell_8.png");
 }
 
 CellView::~CellView()

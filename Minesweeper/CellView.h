@@ -13,7 +13,6 @@ public:
 
 	void DrawCell(SDL_Rect* rectangle, const Cell* cell);
 	void DrawBombCount(SDL_Rect* rectangle, int bombCount);
-
 	void SetNearBombCount(int nearBombCount);
 	void SetIsHighlighted(bool isHighlighted);
 
