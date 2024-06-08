@@ -1,26 +1,25 @@
 #include "GameWindow.h"
 
-GameWindow::GameWindow()
+GameWindow::GameWindow(const std::string& title, int width, int height, GameFieldLogic* gameField, int FPS)
 {
-}
-
-GameWindow::~GameWindow()
-{
-}
-
-void GameWindow::Init(std::string title, int width, int height, GameField* gameField)
-{
-	this->window   = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 
+	this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
 		SDL_WINDOW_SHOWN);
 	this->renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	this->gameField = gameField;
+	this->gameFieldLogic = gameField;
 	this->gameFieldView = new GameFieldView(gameField, renderer, width, height);
 	this->width = width;
 	this->height = height;
 	this->isRunning = true;
 	this->leftPressed = false;
 	this->rightPressed = false;
+	this->FPS = FPS;
+}
+
+GameWindow::~GameWindow()
+{
+	delete gameFieldView;
+	delete gameFieldLogic;
 }
 
 void GameWindow::HandleEvents()
@@ -87,18 +86,18 @@ void GameWindow::MouseFieldPosition(int& mouseColumn, int& mouseRow, int cellSiz
 	mouseRow = mousePositionY / cellSize;
 }
 
-void GameWindow::DrawField(GameField* gameField)
+void GameWindow::DrawField(GameFieldLogic* gameField)
 {
 	int cellSize = gameFieldView->GetCellSize();
 	int mouseColumn, mouseRow;
 	MouseFieldPosition(mouseColumn, mouseRow, cellSize);
-	gameFieldView->DrawField(mouseColumn, mouseRow);
+	gameFieldView->DrawField(mouseRow, mouseColumn);
 }
 
 void GameWindow::Render()
 {
 	SDL_RenderClear(renderer);
-	DrawField(gameField);
+	DrawField(gameFieldLogic);
 	SDL_RenderPresent(renderer);
 }
 
@@ -111,20 +110,36 @@ void GameWindow::Clean()
 
 void GameWindow::HandleMouseLeftButtonDown(SDL_MouseButtonEvent& b)
 {
-	int cellSize = CellSize(gameField);
-	gameField->FloodOpen(b.y / cellSize, b.x / cellSize);
+	int cellSize = CellSize(gameFieldLogic);
+	gameFieldLogic->TryFloodOpen(b.y / cellSize, b.x / cellSize);
 }
 
 void GameWindow::HandleMouseBothButtonDown(SDL_MouseButtonEvent& b)
 {
-	int cellSize = CellSize(gameField);
-	gameField->TryChord(b.y / cellSize, b.x / cellSize);
+	int cellSize = CellSize(gameFieldLogic);
+	gameFieldLogic->TryChord(b.y / cellSize, b.x / cellSize);
 }
 
 void GameWindow::HandleMouseRightButtonDown(SDL_MouseButtonEvent& b)
 {
-	int cellSize = CellSize(gameField);
-	gameField->TrySwitchFlag(b.y / cellSize, b.x / cellSize);
+	int cellSize = CellSize(gameFieldLogic);
+	gameFieldLogic->TrySwitchFlag(b.y / cellSize, b.x / cellSize);
+}
+
+void GameWindow::Run()
+{
+	const int frameDelay = 1000 / FPS;
+	while (Running())
+	{
+		long long frameStart = SDL_GetTicks64();
+		HandleEvents();
+		Render();
+		long long frameTime = SDL_GetTicks64() - frameStart;
+		if (frameDelay > frameTime)
+		{
+			SDL_Delay(frameDelay - frameTime);
+		}
+	}
 }
 
 bool GameWindow::Running()
@@ -132,9 +147,7 @@ bool GameWindow::Running()
 	return isRunning;
 }
 
-int GameWindow::CellSize(GameField* gameField)
+int GameWindow::CellSize(GameFieldLogic* gameField)
 {
-	int columnCount = gameField->GetColumnCount(); 
-	int rowCount = gameField->GetRowCount();
-	return std::min(width / columnCount, height / rowCount);
+	return std::min(height / gameField->GetRowCount(), width / gameField->GetColumnCount());
 }

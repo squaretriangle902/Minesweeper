@@ -1,6 +1,6 @@
 #include "CellView.h"
 
-void CellView::DrawCell(SDL_Rect* rectangle, const Cell* cell/*, bool highlighted, int nearBombCount*/)
+void CellView::DrawCell(SDL_Rect* rectangle, const Cell* cell)
 {
 	if (!cell->IsOpened())
 	{
@@ -74,7 +74,6 @@ void CellView::SetIsHighlighted(bool isHighlighted)
 CellView::CellView(SDL_Renderer* renderer)
 {
 	this->renderer            = renderer;
-	this->tmpSurface          = tmpSurface;
 	this->tmpSurface          = new SDL_Surface();
 	this->flaggedCellTexture  = LoadTexture(tmpSurface, renderer, "images/flaggedCell.png");
 	this->explodedCellTexture = LoadTexture(tmpSurface, renderer, "images/explodedCell.png");

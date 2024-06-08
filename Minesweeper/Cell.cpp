@@ -3,8 +3,8 @@
 
 Cell::Cell(bool bomb, bool flag, bool  opened)
 {
-	this->hasBomb = bomb;
-	this->hasFlag = flag;
+	this->isBomb = bomb;
+	this->isFlag = flag;
 	this->isOpened = opened;
 }
 
@@ -14,12 +14,12 @@ Cell::~Cell()
 
 bool Cell::HasBomb() const
 {
-	return this->hasBomb;
+	return this->isBomb;
 }
 
 bool Cell::HasFlag() const
 {
-	return this->hasFlag;
+	return this->isFlag;
 }
 
 bool Cell::IsOpened() const
@@ -29,11 +29,11 @@ bool Cell::IsOpened() const
 
 bool Cell::TryAddBomb()
 {
-	if (this->hasBomb)
+	if (this->isBomb)
 	{
 		return false;
 	}
-	this->hasBomb = true;
+	this->isBomb = true;
 	return true;
 }
 
@@ -43,13 +43,13 @@ bool Cell::TrySwitchFlag()
 	{
 		return false;
 	}
-	this->hasFlag = !hasFlag;
+	this->isFlag = !isFlag;
 	return true;
 }
 
 bool Cell::TryOpen()
 {
-	if (this->hasFlag)
+	if (this->isFlag)
 	{
 		return false;
 	}

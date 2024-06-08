@@ -1,6 +1,6 @@
 #include "GameFieldView.h"
 
-GameFieldView::GameFieldView(GameField* gameField, SDL_Renderer* renderer, int width, int height)
+GameFieldView::GameFieldView(GameFieldLogic* gameField, SDL_Renderer* renderer, int width, int height)
 {
 	this->renderer = renderer;
 	this->cellView = new CellView(renderer);
@@ -10,12 +10,17 @@ GameFieldView::GameFieldView(GameField* gameField, SDL_Renderer* renderer, int w
 	this->gameField = gameField;
 }
 
+GameFieldView::~GameFieldView()
+{
+	delete cellView;
+}
+
 int GameFieldView::GetCellSize() const
 {
 	return this->cellSize;
 }
 
-void GameFieldView::DrawField(int mouseColumn, int mouseRow) const
+void GameFieldView::DrawField(int mouseRow, int mouseColumn)
 {
 	for (int column = 0; column < gameField->GetColumnCount(); column++)
 	{
@@ -29,7 +34,7 @@ void GameFieldView::DrawField(int mouseColumn, int mouseRow) const
 	}
 }
 
-int GameFieldView::CellSize(GameField* gameField)
+int GameFieldView::CellSize(GameFieldLogic* gameField)
 {
 	return std::min(width / gameField->GetColumnCount(), height / gameField->GetRowCount());
 }

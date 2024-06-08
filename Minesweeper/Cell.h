@@ -14,5 +14,7 @@ public:
 	bool TryOpen();
 
 private:
-	bool hasBomb, hasFlag, isOpened;
+	bool isBomb; 
+	bool isFlag;
+	bool isOpened;
 };

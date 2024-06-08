@@ -5,24 +5,24 @@
 #include "Cell.h"
 #include "TextureLoading.h"
 #include "CellView.h"
-#include "GameField.h"
+#include "GameFieldLogic.h"
 
-class GameField;
+class GameFieldLogic;
 
 class GameFieldView
 {
 public:
-	GameFieldView(GameField* gameField, SDL_Renderer* renderer, int width, int height);
+	GameFieldView(GameFieldLogic* gameField, SDL_Renderer* renderer, int width, int height);
 	~GameFieldView();
 
 	int GetCellSize() const;
-	void DrawField(int mouseColumn, int mouseRow) const;
+	void DrawField(int mouseRow, int mouseColumn);
 private:
-	int CellSize(GameField* gameField);
+	int CellSize(GameFieldLogic* gameField);
 
 	SDL_Renderer* renderer;
 	CellView* cellView;
-	GameField* gameField;
+	GameFieldLogic* gameField;
 	int cellSize;
 	int width;
 	int height;

@@ -144,6 +144,7 @@
     <ClCompile Include="CellPosition.cpp" />
     <ClCompile Include="PositionConvert.cpp" />
     <ClCompile Include="TextureLoading.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,11 +153,12 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameFieldView.h" />
     <ClInclude Include="GameWindow.h" />
-    <ClInclude Include="GameField.h" />
+    <ClInclude Include="GameFieldLogic.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="CellPosition.h" />
     <ClInclude Include="PositionConvert.h" />
     <ClInclude Include="TextureLoading.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="WindowPosition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
