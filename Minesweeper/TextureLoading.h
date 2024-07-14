@@ -2,7 +2,7 @@
 #include <SDL_Image.h>
 #include <SDL_ttf.h>
 #include <string>
+#include "FieldPosition.h"
 
-SDL_Texture* LoadTexture(SDL_Surface* surface, SDL_Renderer* renderer, std::string imagePath);
-
-SDL_Rect RectangleAtPosition(int row, int column, int cellSize);
+SDL_Texture* LoadTexture(SDL_Renderer* renderer, const std::string& imagePath);
+SDL_Rect RectangleAtCellPosition(FieldPosition cellPosition, int cellSize);

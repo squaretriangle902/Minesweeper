@@ -18,13 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFieldLogic.cpp">
+    <ClCompile Include="FieldLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameWindow.cpp">
+    <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cell.cpp">
+    <ClCompile Include="CellLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -36,13 +36,13 @@
     <ClCompile Include="TextureLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFieldView.cpp">
+    <ClCompile Include="FieldView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CellPosition.cpp">
+    <ClCompile Include="FieldPosition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindowPosition.cpp">
+    <ClCompile Include="ViewPosition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PositionConvert.cpp">
@@ -51,18 +51,27 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewSize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldSize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameFieldLogic.h">
+    <ClInclude Include="FieldLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameWindow.h">
+    <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cell.h">
+    <ClInclude Include="CellLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
@@ -74,19 +83,28 @@
     <ClInclude Include="TextureLoading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameFieldView.h">
+    <ClInclude Include="FieldView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CellPosition.h">
+    <ClInclude Include="FieldPosition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WindowPosition.h">
+    <ClInclude Include="ViewPosition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PositionConvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldSize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

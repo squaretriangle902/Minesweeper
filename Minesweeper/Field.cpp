@@ -6,17 +6,17 @@ Field::Field(int columnCount, int rowCount)
 {
 	this->columnCount = columnCount;
 	this->rowCount = rowCount;
-	this->gameField = vector<vector<Cell*>>(columnCount, vector<Cell*>(rowCount));
+	this->gameField = vector<vector<CellLogic*>>(columnCount, vector<CellLogic*>(rowCount));
 	InitializeGameField(columnCount, rowCount, gameField);
 }
 
-void Field::InitializeGameField(int columnCount, int rowCount, vector<vector<Cell*>>& gameField)
+void Field::InitializeGameField(int columnCount, int rowCount, vector<vector<CellLogic*>>& gameField)
 {
 	for (int i = 0; i < columnCount; i++)
 	{
 		for (int j = 0; j < rowCount; j++)
 		{
-			gameField[i][j] = new Cell(false, false, false);
+			gameField[i][j] = new CellLogic(false, false, false);
 		}
 	}
 }
@@ -80,7 +80,7 @@ int Field::GetNearFlagsCount(int column, int row)
 	return nearFlagsCount;
 }
 
-const Cell* Field::GetCell(int column, int row) const
+const CellLogic* Field::GetCell(int column, int row) const
 {
 	return gameField[column][row];
 }

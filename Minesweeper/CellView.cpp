@@ -1,63 +1,83 @@
 #include "CellView.h"
 
-void CellView::DrawCell(SDL_Rect* rectangle, const Cell* cell)
+void CellView::Render(SDL_Rect* rectangle, const CellLogic* cell)
+{
+	RenderCell(rectangle, cell);
+	RenderHover(rectangle, cell);
+}
+
+void CellView::RenderOpenedCell(SDL_Rect* rectangle, const CellLogic* cell)
+{
+	SDL_RenderCopy(renderer, openedCellTexture, nullptr, rectangle);
+	if (cell->HasBomb())
+	{
+		SDL_RenderCopy(renderer, bomb, nullptr, rectangle);
+		return;
+	}
+	if (this->nearBombCount > 0)
+	{
+		RenderBombCount(rectangle);
+	}
+}
+
+void CellView::RenderCell(SDL_Rect* rectangle, const CellLogic* cell)
 {
 	if (!cell->IsOpened())
 	{
-		SDL_RenderCopy(renderer, closedCellTexture, nullptr, rectangle);
+		RenderClosedCell(rectangle, cell);
+		return;
 	}
+	RenderOpenedCell(rectangle, cell);
+}
+
+void CellView::RenderClosedCell(SDL_Rect* rectangle, const CellLogic* cell)
+{
+	SDL_RenderCopy(renderer, closedCellTexture, nullptr, rectangle);
 	if (cell->HasFlag())
 	{
-		SDL_RenderCopy(renderer, flaggedCellTexture, nullptr, rectangle);
+		SDL_RenderCopy(renderer, flag, nullptr, rectangle);
 	}
-	if (cell->IsOpened() && !cell->HasBomb())
-	{
-		DrawBombCount(rectangle, nearBombCount);
-	}
-	if (cell->IsOpened() && cell->HasBomb())
-	{
-		SDL_RenderCopy(renderer, explodedCellTexture, nullptr, rectangle);
-	}
-	if (isHighlighted)
+}
+
+void CellView::RenderHover(SDL_Rect* rectangle, const CellLogic* cell)
+{
+	if (isHover)
 	{
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 128);
 		SDL_RenderFillRect(renderer, rectangle);
 	}
 }
 
-void CellView::DrawBombCount(SDL_Rect* rectangle, int bombCount)
+void CellView::RenderBombCount(SDL_Rect* rectangle)
 {
-	switch (bombCount)
+	switch (this->nearBombCount)
 	{
-	case 0:
-		SDL_RenderCopy(renderer, openedCellTexture_0, nullptr, rectangle);
-		break;
 	case 1:
-		SDL_RenderCopy(renderer, openedCellTexture_1, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, one, nullptr, rectangle);
+		return;
 	case 2:
-		SDL_RenderCopy(renderer, openedCellTexture_2, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, two, nullptr, rectangle);
+		return;
 	case 3:
-		SDL_RenderCopy(renderer, openedCellTexture_3, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, three, nullptr, rectangle);
+		return;
 	case 4:
-		SDL_RenderCopy(renderer, openedCellTexture_4, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, four, nullptr, rectangle);
+		return;
 	case 5:
-		SDL_RenderCopy(renderer, openedCellTexture_5, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, five, nullptr, rectangle);
+		return;
 	case 6:
-		SDL_RenderCopy(renderer, openedCellTexture_6, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, six, nullptr, rectangle);
+		return;
 	case 7:
-		SDL_RenderCopy(renderer, openedCellTexture_7, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, seven, nullptr, rectangle);
+		return;
 	case 8:
-		SDL_RenderCopy(renderer, openedCellTexture_8, nullptr, rectangle);
-		break;
+		SDL_RenderCopy(renderer, eight, nullptr, rectangle);
+		return;
 	default:
-		break;
+		return;
 	}
 }
 
@@ -66,27 +86,29 @@ void CellView::SetNearBombCount(int nearBombCount)
 	this->nearBombCount = nearBombCount;
 }
 
-void CellView::SetIsHighlighted(bool isHighlighted)
+void CellView::SetIsHover(bool isHover)
 {
-	this->isHighlighted = isHighlighted;
+	this->isHover = isHover;
 }
 
 CellView::CellView(SDL_Renderer* renderer)
 {
-	this->renderer            = renderer;
-	this->tmpSurface          = new SDL_Surface();
-	this->flaggedCellTexture  = LoadTexture(tmpSurface, renderer, "images/flaggedCell.png");
-	this->explodedCellTexture = LoadTexture(tmpSurface, renderer, "images/explodedCell.png");
-	this->closedCellTexture   = LoadTexture(tmpSurface, renderer, "images/closedCell.png");
-	this->openedCellTexture_0 = LoadTexture(tmpSurface, renderer, "images/openedCell_0.png");
-	this->openedCellTexture_1 = LoadTexture(tmpSurface, renderer, "images/openedCell_1.png");
-	this->openedCellTexture_2 = LoadTexture(tmpSurface, renderer, "images/openedCell_2.png");
-	this->openedCellTexture_3 = LoadTexture(tmpSurface, renderer, "images/openedCell_3.png");
-	this->openedCellTexture_4 = LoadTexture(tmpSurface, renderer, "images/openedCell_4.png");
-	this->openedCellTexture_5 = LoadTexture(tmpSurface, renderer, "images/openedCell_5.png");
-	this->openedCellTexture_6 = LoadTexture(tmpSurface, renderer, "images/openedCell_6.png");
-	this->openedCellTexture_7 = LoadTexture(tmpSurface, renderer, "images/openedCell_7.png");
-	this->openedCellTexture_8 = LoadTexture(tmpSurface, renderer, "images/openedCell_8.png");
+	this->renderer = renderer;
+	this->tmpSurface = new SDL_Surface();
+	this->isHover = false;
+	this->nearBombCount = 0;
+	this->closedCellTexture = LoadTexture(renderer, "images/closedCell.png");
+	this->openedCellTexture = LoadTexture(renderer, "images/openedCell.png");
+	this->one = LoadTexture(renderer, "images/one.png");
+	this->two = LoadTexture(renderer, "images/two.png");
+	this->three = LoadTexture(renderer, "images/three.png");
+	this->four = LoadTexture(renderer, "images/four.png");
+	this->five = LoadTexture(renderer, "images/five.png");
+	this->six = LoadTexture(renderer, "images/six.png");
+	this->seven = LoadTexture(renderer, "images/seven.png");
+	this->eight = LoadTexture(renderer, "images/eight.png");
+	this->flag = LoadTexture(renderer, "images/flag.png");
+	this->bomb = LoadTexture(renderer, "images/bomb.png");
 }
 
 CellView::~CellView()

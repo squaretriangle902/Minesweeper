@@ -1,6 +1,6 @@
 #include "PositionConvert.h"
 
-CellPosition Convert(WindowPosition windowPosition, int cellSize)
+FieldPosition Convert(ViewPosition windowPosition, int cellSize)
 {
-    return CellPosition(windowPosition.y / cellSize, windowPosition.x / cellSize);
+    return FieldPosition(windowPosition.y / cellSize, windowPosition.x / cellSize);
 }

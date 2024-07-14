@@ -1,5 +1,5 @@
 #pragma once
-#include "CellPosition.h"
-#include "WindowPosition.h"
+#include "FieldPosition.h"
+#include "ViewPosition.h"
 
-CellPosition Convert(WindowPosition windowPosition, int cellSize);
+FieldPosition Convert(ViewPosition windowPosition, int cellSize);

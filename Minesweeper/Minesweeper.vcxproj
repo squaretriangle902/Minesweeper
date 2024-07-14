@@ -134,32 +134,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="CellLogic.cpp" />
     <ClCompile Include="CellView.cpp" />
+    <ClCompile Include="FieldSize.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameFieldView.cpp" />
-    <ClCompile Include="GameWindow.cpp" />
-    <ClCompile Include="GameFieldLogic.cpp" />
+    <ClCompile Include="FieldView.cpp" />
+    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="FieldLogic.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="CellPosition.cpp" />
+    <ClCompile Include="FieldPosition.cpp" />
     <ClCompile Include="PositionConvert.cpp" />
+    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="ViewSize.cpp" />
     <ClCompile Include="TextureLoading.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="WindowPosition.cpp" />
+    <ClCompile Include="ViewPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellLogic.h" />
     <ClInclude Include="CellView.h" />
+    <ClInclude Include="FieldSize.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameFieldView.h" />
-    <ClInclude Include="GameWindow.h" />
-    <ClInclude Include="GameFieldLogic.h" />
+    <ClInclude Include="FieldView.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="FieldLogic.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="CellPosition.h" />
+    <ClInclude Include="FieldPosition.h" />
     <ClInclude Include="PositionConvert.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="ViewSize.h" />
     <ClInclude Include="TextureLoading.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="WindowPosition.h" />
+    <ClInclude Include="ViewPosition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

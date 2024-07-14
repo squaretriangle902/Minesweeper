@@ -1,10 +1,10 @@
 #pragma once
 
-class Cell
+class CellLogic
 {
 public:
-	Cell(bool bomb = false, bool flag = false, bool opened = false);
-	~Cell();
+	CellLogic(bool bomb = false, bool flag = false, bool opened = false);
+	~CellLogic();
 
 	bool HasBomb() const;
 	bool HasFlag() const;

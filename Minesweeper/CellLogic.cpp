@@ -1,33 +1,33 @@
-#include "Cell.h"
+#include "CellLogic.h"
 
 
-Cell::Cell(bool bomb, bool flag, bool  opened)
+CellLogic::CellLogic(bool bomb, bool flag, bool  opened)
 {
 	this->isBomb = bomb;
 	this->isFlag = flag;
 	this->isOpened = opened;
 }
 
-Cell::~Cell()
+CellLogic::~CellLogic()
 {
 }
 
-bool Cell::HasBomb() const
+bool CellLogic::HasBomb() const
 {
 	return this->isBomb;
 }
 
-bool Cell::HasFlag() const
+bool CellLogic::HasFlag() const
 {
 	return this->isFlag;
 }
 
-bool Cell::IsOpened() const
+bool CellLogic::IsOpened() const
 {
 	return this->isOpened;
 }
 
-bool Cell::TryAddBomb()
+bool CellLogic::TryAddBomb()
 {
 	if (this->isBomb)
 	{
@@ -37,7 +37,7 @@ bool Cell::TryAddBomb()
 	return true;
 }
 
-bool Cell::TrySwitchFlag()
+bool CellLogic::TrySwitchFlag()
 {
 	if (this->isOpened)
 	{
@@ -47,7 +47,7 @@ bool Cell::TrySwitchFlag()
 	return true;
 }
 
-bool Cell::TryOpen()
+bool CellLogic::TryOpen()
 {
 	if (this->isFlag)
 	{
